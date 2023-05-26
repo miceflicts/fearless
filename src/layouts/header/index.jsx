@@ -1,14 +1,25 @@
-import React from 'react'
+import React, {useState} from 'react'
 import { Link } from 'react-router-dom'
 import "./style.css"
 
 import logo from "../../images/logo.png"
-import instagram_icon from "../../images/header/instagram_icon.png"
 import cart from "../../images/header/cart.png"
 import profile from "../../images/header/profile.png"
 import heart from "../../images/header/heart.png"
+import Profile_options from '../../components/header/profile_options'
 
 function Header() {
+  const [isHoveringProfile, setIsHoveringProfile] = useState(false);
+
+  const handleMouseOver = () => {
+    setIsHoveringProfile(true);
+  }
+
+  const handleMouseOut = () => {
+    setIsHoveringProfile(false);
+  }
+
+
   return (
     <>
         <div className=' w-full h-10 flex justify-center items-center bg-neutral-900'>
@@ -26,15 +37,23 @@ function Header() {
 
             <div className=' flex justify-center gap-4 mr-10'>
                 <Link to="">
-                    <img className='w-[33px]' src={heart} alt="Heart logo" />
+                    <img className='w-[33px] hover:opacity-80' src={heart} alt="Heart logo" />
                 </Link>
                 
                 <Link to="">
-                    <img className='w-[33px]' src={cart} alt="Cart logo" />
+                    <img className='w-[33px] hover:opacity-80' src={cart} alt="Cart logo" />
                 </Link>
 
                 <Link to="">
-                    <img className='w-[33px]' src={profile} alt="Profile Logo" />
+                    <div onMouseOver={handleMouseOver} onMouseOut={handleMouseOut} >
+                        <img className='w-[33px] hover:opacity-80' src={profile} alt="Profile Logo" />
+                        {isHoveringProfile && (
+                            <>
+                                <div className='absolute w-10 h-44 right-9 bg-[rgb(39,38,38)] rounded-xl'></div>
+                                <Profile_options></Profile_options>
+                            </>
+                        )}
+                    </div>
                 </Link>
             </div>
 

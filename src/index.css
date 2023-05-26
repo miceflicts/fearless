@@ -5,6 +5,7 @@
 body {
   background-color: rgb(39, 38, 38);
   scrollbar-width: thin;
+  overflow-x: hidden;
 }
 
 body::-webkit-scrollbar {

@@ -1,7 +1,7 @@
 import React from 'react'
 
-import Banner from '../../components/banner'
-import Infos from '../../components/infos'
+import Banner from '../../components/main_page/banner'
+import Infos from '../../components/main_page/infos'
 
 function Home() {
   return (
