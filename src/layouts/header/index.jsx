@@ -49,7 +49,7 @@ function Header() {
                         <img className='w-[33px] hover:opacity-80' src={profile} alt="Profile Logo" />
                         {isHoveringProfile && (
                             <>
-                                <div className='absolute w-10 h-44 right-9 bg-[rgb(39,38,38)] rounded-xl'></div>
+                                <div className='absolute w-10 h-44 right-9 bg-[rgb(39,38,38)] rounded-xl z-10'></div>
                                 <Profile_options></Profile_options>
                             </>
                         )}
