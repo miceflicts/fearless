@@ -1,6 +1,5 @@
 import React, {useState} from 'react'
 import { Link } from 'react-router-dom'
-import "./style.css"
 
 import logo from "../../images/logo.png"
 import cart from "../../images/header/cart.png"
@@ -44,17 +43,15 @@ function Header() {
                     <img className='w-[33px] hover:opacity-80' src={cart} alt="Cart logo" />
                 </Link>
 
-                <Link to="">
-                    <div onMouseOver={handleMouseOver} onMouseOut={handleMouseOut} >
-                        <img className='w-[33px] hover:opacity-80' src={profile} alt="Profile Logo" />
-                        {isHoveringProfile && (
-                            <>
-                                <div className='absolute w-10 h-44 right-9 bg-[rgb(39,38,38)] rounded-xl z-10'></div>
-                                <Profile_options></Profile_options>
-                            </>
-                        )}
-                    </div>
-                </Link>
+                <div onMouseOver={handleMouseOver} onMouseOut={handleMouseOut} >
+                    <Link to="/login"><img className='w-[33px] hover:opacity-80' src={profile} alt="Profile Logo" /></Link>
+                    {isHoveringProfile && (
+                        <>
+                            <div className='absolute w-10 h-44 right-9 bg-[rgb(39,38,38)] rounded-xl z-10'></div>
+                            <Profile_options></Profile_options>
+                        </>
+                    )}
+                </div>
             </div>
 
         </div>

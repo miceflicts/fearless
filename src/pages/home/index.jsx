@@ -12,7 +12,7 @@ function Home() {
         </div>
 
         <div className=' w-full flex justify-center'>
-            <div className='w-3/4 min-h-screen bg-black'></div>
+            <div className='w-3/4 min-h-screen bg-black max-[1000px]:w-full'></div>
         </div>
     </>
   )
