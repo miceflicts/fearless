@@ -1,8 +1,10 @@
 import React,{useState} from 'react'
+import { auth } from '../../config/firebase';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import * as EmailValidator from 'email-validator';
 import SignInEmailAndPassword from '../../components/auth/SignInEmailAndPassword'
 import SignInWithGoogle from '../../components/auth/SignInWithGoogle'
 import SignInWithFacebook from '../../components/auth/SignInWithFacebook'
-import LogIn from '../../components/auth/LogIn'
 
 function Login() {
   // criar conta
@@ -14,19 +16,35 @@ function Login() {
   const [logInEmail, setLogInEmail] = useState();
   const [logInPassword, setLogInPassword] = useState();
 
+  // Mensagens de erro
+  const [istheSamePassword, setIstheSamePassword] = useState(true);
+  const [isTheEmailValid, setIsTheEmailValid] = useState(true);
+  const [isThePasswordStrong, setIsThePasswordStrong] = useState(true);
+  const [isTheLoginWrong, setIsTheLoginWrong] = useState(false);
+
   const handleSignUpClick = () => {
-    if ( firstUserPassword === secondUserPassword ) {
-        SignInEmailAndPassword(userEmail, firstUserPassword)
-    }
-    else {
-        console.error("As senhas não são as mesmas")
+    setIsTheEmailValid(EmailValidator.validate(userEmail));
+
+    firstUserPassword.length < 6 ? setIsThePasswordStrong(false) : setIsThePasswordStrong(true)
+    firstUserPassword === secondUserPassword ? setIstheSamePassword(true) : setIstheSamePassword(false);
+    
+    firstUserPassword === secondUserPassword && isTheEmailValid && isThePasswordStrong ? SignInEmailAndPassword(userEmail, firstUserPassword) : null;
+    
+  }
+
+    const handleLogInClick = async () => {
+        if (logInEmail !== null && logInPassword !== null) {
+            try {
+                let user = await signInWithEmailAndPassword(auth, logInEmail, logInPassword);
+                console.log('logged in');
+                setIsTheLoginWrong(false);
+            } catch (err) {
+                setIsTheLoginWrong(true);
+                console.error(err);
+            }
+        };
     };
-  }
-
-  const handleLogInClick = () => {
-    LogIn(logInEmail, logInPassword);
-  }
-
+  
   return (
     <div className=' w-screen flex justify-center'>
         <div className=' flex mt-[100px] justify-between min-h-screen'>
@@ -36,6 +54,11 @@ function Login() {
                     <div className='flex flex-col'>
                         <label className=' mt-8 text-white text-sm font-normal mb-[8px]'>E-mail:</label>
                         <input onChange={(e) => {setLogInEmail(e.target.value)}} type="text" className="text-xs rounded-[5px] border block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white"/>
+                        {isTheLoginWrong ? (
+                        <span className=' text-red-500 text-xs mt-1'>
+                            O Endereço de Email ou Senha que você digitou está incorreto.
+                        </span>
+                        ) : null}
                         <label className=' mt-8 text-white text-sm font-normal mb-[8px]'>Senha</label>
                         <input onChange={(e) => {setLogInPassword(e.target.value)}} type="password" className="text-xs rounded-[5px] border block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white"/>
                     </div>
@@ -67,14 +90,29 @@ function Login() {
                     <div>
                         <h3 className=' mt-8 text-white text-sm font-normal'>E-mail:</h3>
                         <input onChange={(e) => {setUserEmail(e.target.value)}} type="text" className="text-xs mt-2 rounded-[5px] border block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white"/>
+                        {!isTheEmailValid ? (
+                            <span className=' text-red-500 text-xs'>
+                            O e-mail que você digitou não é válido. Por favor, verifique seu e-mail e tente novamente
+                        </span>
+                        ) : null}
                     </div>
                     <div>
                         <label className=' mt-8 text-white text-sm font-normal mb-[8px]'>Senha</label>
                         <input onChange={(e) => {setFirstUserPassword(e.target.value)}} type="password" className="text-xs mt-2 rounded-[5px] border block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white"/>
+                        {!isThePasswordStrong ? (
+                        <span className=' text-red-500 text-xs'>
+                            A senha deve ter no mínimo 6 caracteres.
+                        </span>
+                        ) : null}
                     </div>
                     <div>
                         <label className=' mt-8 text-white text-sm font-normal mb-[8px]'>Confirme sua senha:</label>
                         <input onChange={(e) => {setSecondUserPassword(e.target.value)}} type="password" id="default-input" className="text-xs mt-2 rounded-[5px] border block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white"/>
+                        {!istheSamePassword ? (
+                        <span className=' text-red-500 text-xs'>
+                            A sua senha não corresponde, por favor tente novamente.
+                        </span>
+                        ) : null}
                     </div>
                     <hr className='w-full h-px border-0 bg-white/30 mt-6'/>
                     <button onClick={handleSignUpClick} type="button" className="mt-6 text-white bg-black/70 hover:bg-black/60 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-base px-5 py-2.5 mr-2 mb-2">Registrar</button>
