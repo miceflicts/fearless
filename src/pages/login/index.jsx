@@ -1,10 +1,14 @@
 import React,{useState} from 'react'
+
 import { auth } from '../../config/firebase';
 import { signInWithEmailAndPassword } from 'firebase/auth';
-import * as EmailValidator from 'email-validator';
-import SignInEmailAndPassword from '../../components/auth/SignInEmailAndPassword'
+import { createUserWithEmailAndPassword } from "firebase/auth"
 import SignInWithGoogle from '../../components/auth/SignInWithGoogle'
 import SignInWithFacebook from '../../components/auth/SignInWithFacebook'
+
+import * as EmailValidator from 'email-validator';
+import { useNavigate } from 'react-router-dom';
+
 
 function Login() {
   // criar conta
@@ -21,26 +25,36 @@ function Login() {
   const [isTheEmailValid, setIsTheEmailValid] = useState(true);
   const [isThePasswordStrong, setIsThePasswordStrong] = useState(true);
   const [isTheLoginWrong, setIsTheLoginWrong] = useState(false);
+  const [isEmailAlreadyInUse, setIsEmailAlreadyInUse] = useState(false);
+
+  const navigate = useNavigate();
 
   const handleSignUpClick = () => {
     setIsTheEmailValid(EmailValidator.validate(userEmail));
-
     firstUserPassword.length < 6 ? setIsThePasswordStrong(false) : setIsThePasswordStrong(true)
     firstUserPassword === secondUserPassword ? setIstheSamePassword(true) : setIstheSamePassword(false);
     
-    firstUserPassword === secondUserPassword && isTheEmailValid && isThePasswordStrong ? SignInEmailAndPassword(userEmail, firstUserPassword) : null;
-    
+    firstUserPassword === secondUserPassword && isTheEmailValid && isThePasswordStrong ? signUp() : null;
   }
 
+  const signUp = async () => {
+    try {
+        await createUserWithEmailAndPassword( auth, userEmail, firstUserPassword);
+        navigate("/user/register_success")
+    } catch(error){
+        const errorMessage = error.message.split(':')[1].trim();
+        console.log(errorMessage);
+        errorMessage === "Error (auth/email-already-in-use)." ? setIsEmailAlreadyInUse(true) : setIsEmailAlreadyInUse(false);
+    };
+  };
+
     const handleLogInClick = async () => {
-        if (logInEmail !== null && logInPassword !== null) {
+        if (logInEmail !== undefined && logInPassword !== undefined) {
             try {
                 let user = await signInWithEmailAndPassword(auth, logInEmail, logInPassword);
-                console.log('logged in');
                 setIsTheLoginWrong(false);
             } catch (err) {
                 setIsTheLoginWrong(true);
-                console.error(err);
             }
         };
     };
@@ -93,6 +107,11 @@ function Login() {
                         {!isTheEmailValid ? (
                             <span className=' text-red-500 text-xs'>
                             O e-mail que você digitou não é válido. Por favor, verifique seu e-mail e tente novamente
+                        </span>
+                        ) : null}
+                        {isEmailAlreadyInUse ? (
+                            <span className=' text-red-500 text-xs'>
+                            O e-mail que você digitou já está em uso.
                         </span>
                         ) : null}
                     </div>

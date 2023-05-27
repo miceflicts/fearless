@@ -4,7 +4,7 @@ import { auth } from '../../config/firebase';
 function CheckLoginStatus() {
 
   const checkLoginStatus = () => {
-    console.log(auth.currentUser);
+    console.log("check login status " + auth.currentUser);
   };
 
   checkLoginStatus();

@@ -44,7 +44,7 @@ function Header() {
                 </Link>
 
                 <div onMouseOver={handleMouseOver} onMouseOut={handleMouseOut} >
-                    <Link to="/login"><img className='w-[33px] hover:opacity-80' src={profile} alt="Profile Logo" /></Link>
+                    <Link to="/user/login"><img className='w-[33px] hover:opacity-80' src={profile} alt="Profile Logo" /></Link>
                     {isHoveringProfile && (
                         <>
                             <div className='absolute w-10 h-44 right-9 bg-[rgb(39,38,38)] rounded-xl z-10'></div>
