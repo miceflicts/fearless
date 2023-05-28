@@ -1,13 +1,15 @@
 import React from 'react'
-import { auth } from '../../config/firebase';
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 function CheckLoginStatus() {
+  const auth = getAuth();
 
-  const checkLoginStatus = () => {
-    console.log("check login status " + auth.currentUser);
-  };
-
-  checkLoginStatus();
+  onAuthStateChanged(auth, (user) => {
+    if (user) { // check if the user is logged in
+      const uid = user.uid;
+      console.log(uid)
+    }
+  });
 
   return (
     <>
