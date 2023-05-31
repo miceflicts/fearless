@@ -1,5 +1,6 @@
 import React, {useState} from 'react'
 import { Link } from 'react-router-dom'
+import { getAuth } from 'firebase/auth'
 
 import logo from "../../images/logo.png"
 import cart from "../../images/header/cart.png"
@@ -13,6 +14,9 @@ function Header() {
   const [isHamburguerOpen, setIsHamburguerOpen] = useState(false);
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [ userInfo, setUserInfo ] = useState({});
+
+  const auth = getAuth();
 
 
   const handleMouseOver = () => {
@@ -29,6 +33,19 @@ function Header() {
 
   const handleLoginStatus = (isLogged) => {
     isLogged ? setIsLoggedIn(true) : setIsLoggedIn(false);
+    handleUserInfo();
+    console.log(isLogged)
+  }
+
+  const handleUserInfo = () => {
+    if (auth.currentUser !== null) {
+      setUserInfo(prevUserInfo => {
+        if (prevUserInfo.userId !== auth.currentUser.uid) {
+          return { userId: auth.currentUser.uid, userName: auth.currentUser.displayName, userEmail: auth.currentUser.email, userPhoto: auth.currentUser.photoURL};
+        }
+        return prevUserInfo;
+      });
+    }
   }
   
 
@@ -66,7 +83,7 @@ function Header() {
                     {isHoveringProfile && (
                         <>
                             <div className='absolute w-10 h-44 right-9 bg-[rgb(39,38,38)] rounded-xl z-10'></div>
-                            <Profile_options isLoggedIn={isLoggedIn}></Profile_options>
+                            <Profile_options isLoggedIn={isLoggedIn} userInfo={userInfo}></Profile_options>
                         </>
                     )}
                 </div>

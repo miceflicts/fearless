@@ -3,12 +3,9 @@ import { Link } from 'react-router-dom'
 
 import { getAuth } from "firebase/auth";
 
-function Profile_options({isLoggedIn}) {
+function Profile_options({isLoggedIn, userInfo}) {
 
-  const auth = getAuth();
-
-  if (auth.currentUser !== null) 
-      console.log("user id: " + auth.currentUser.uid);
+  console.log(userInfo);
 
 
   return (
