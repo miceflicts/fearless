@@ -13,6 +13,7 @@ function Register_Success() {
               <Link className=' contents' to="/"><button type="button" className=" text-white/80 bg-black/70 hover:bg-black/60 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-base w-2/4 py-3.5 mb-32">Voltar para a loja</button></Link>
           </div>
       </div>
+      
       <Footer_Layout></Footer_Layout>
     </>
   )

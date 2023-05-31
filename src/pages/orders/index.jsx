@@ -1,13 +1,13 @@
 import React from 'react'
 import Footer_Layout from '../../layouts/footer'
 
-function Cart() {
+function Orders() {
   return (
     <>
-      <div>Cart</div>
-      <Footer_Layout></Footer_Layout>
+       <div>Orders</div>
+       <Footer_Layout></Footer_Layout>
     </>
   )
 }
 
-export default Cart
+export default Orders

@@ -2,7 +2,6 @@ import React from 'react'
 
 import Banner from '../../components/main_page/banner'
 import Infos from '../../components/main_page/infos'
-import CheckLoginStatus from '../../components/CheckLoginStatus'
 import Footer_Layout from '../../layouts/footer'
 
 
@@ -20,10 +19,7 @@ function Home() {
             </div>
         </div>
 
-        <CheckLoginStatus></CheckLoginStatus>
-
         <Footer_Layout></Footer_Layout>
-
     </>
   )
 }
