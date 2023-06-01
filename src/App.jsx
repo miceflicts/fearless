@@ -10,6 +10,7 @@ import Register_Success from './pages/register_success';
 import Orders from './pages/orders';
 import Recently_viewed from './pages/recently_viewed';
 import Favorites from './pages/favorites';
+import UserIndex from './pages/user_index';
 
 function App() {
 
@@ -25,7 +26,7 @@ function App() {
         <Route path='/user/orders' element={<Orders></Orders>} />
         <Route path='/user/recently_viewed' element={<Recently_viewed></Recently_viewed>} />
         <Route path='/user/favorites' element={<Favorites></Favorites>} />
-  
+        <Route path='/user/index' element={<UserIndex></UserIndex>} />
       </Routes>
     </>
   )
