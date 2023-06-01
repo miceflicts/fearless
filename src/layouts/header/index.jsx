@@ -7,7 +7,7 @@ import cart from "../../images/header/cart.png"
 import profile from "../../images/header/profile.png"
 import heart from "../../images/header/heart.png"
 import Profile_options from '../../components/header/profile_options'
-import CheckLoginStatus from '../../components/CheckLoginStatus'
+import CheckLoginStatus from '../../components/Account/CheckLoginStatus'
 
 function Header() {
   const [isHoveringProfile, setIsHoveringProfile] = useState(false);
@@ -15,8 +15,6 @@ function Header() {
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [ userInfo, setUserInfo ] = useState({});
-
-  const auth = getAuth();
 
 
   const handleMouseOver = () => {
@@ -33,19 +31,15 @@ function Header() {
 
   const handleLoginStatus = (isLogged) => {
     isLogged ? setIsLoggedIn(true) : setIsLoggedIn(false);
-    handleUserInfo();
-    console.log(isLogged)
   }
 
-  const handleUserInfo = () => {
-    if (auth.currentUser !== null) {
-      setUserInfo(prevUserInfo => {
-        if (prevUserInfo.userId !== auth.currentUser.uid) {
-          return { userId: auth.currentUser.uid, userName: auth.currentUser.displayName, userEmail: auth.currentUser.email, userPhoto: auth.currentUser.photoURL};
-        }
-        return prevUserInfo;
-      });
-    }
+  const handleUserInfo = (info) => {
+    setUserInfo(prevUserInfo => {
+      if (prevUserInfo.userId !== info.userId) {
+        return info;
+      }
+      return prevUserInfo;
+    });
   }
   
 
@@ -83,7 +77,7 @@ function Header() {
                     {isHoveringProfile && (
                         <>
                             <div className='absolute w-10 h-44 right-9 bg-[rgb(39,38,38)] rounded-xl z-10'></div>
-                            <Profile_options isLoggedIn={isLoggedIn} userInfo={userInfo}></Profile_options>
+                            <Profile_options closeProfileOptions={handleMouseOut} isLoggedIn={isLoggedIn} userInfo={userInfo}></Profile_options>
                         </>
                     )}
                 </div>
@@ -111,7 +105,7 @@ function Header() {
                 </ul>
         </div>
 
-        <CheckLoginStatus OnLoginStatus={ handleLoginStatus }></CheckLoginStatus>            
+        <CheckLoginStatus OnLoginStatus={ handleLoginStatus } OnUserInformation={ handleUserInfo }></CheckLoginStatus>            
     </>
   )
 }
